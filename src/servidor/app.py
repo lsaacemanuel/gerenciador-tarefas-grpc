@@ -11,9 +11,8 @@ class gerenciadorDeTarefas(tarefas_pb2_grpc.gerenciadorDeTarefasServicer):
 
     def CriarTarefa(self, request, context):
         id_unico = str(uuid.uuid4())
-        diretorio_servidor = os.path.dirname(os.path.abspath(__file__))
-        db = os.path.join(diretorio_servidor, "database")
-        path_tarefa = os.path.join(db, f"{id_unico}.txt")
+
+        path_tarefa = os.path.join(os.path.dirname(__file__), "database", f"{id_unico}.txt")
 
         with open(path_tarefa, "w", encoding="utf-8") as nf:
             nf.write("Titulo: " + request.titulo + "\n")
