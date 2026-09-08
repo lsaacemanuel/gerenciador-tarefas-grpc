@@ -1,0 +1,63 @@
+syntax = "proto3";
+package tarefa;
+
+service gerenciadorDeTarefas {
+
+    rpc CriarTarefa (CriarRequest) returns (CriarReply) {}
+
+    rpc ListarTarefas (ListarRequest) returns (ListarReply) {}
+
+    rpc AtualizarTarefa (AtualizarRequest) returns (AtualizarReply) {}
+
+    rpc DeletarTarefa (DeletarRequest) returns (DeletarReply) {}
+}
+
+// estrutura da tarefa sendo utilizada no sistema
+message Tarefa {
+    string titulo = 1;
+    string descricao = 2;
+    string envolvidos = 3;
+    string id = 4;
+}
+
+message CriarRequest {
+    string titulo = 1;
+    string descricao = 2;
+    string envolvidos = 3;
+}
+
+message CriarReply {
+    string titulo = 1;
+    string descricao = 2;
+    string envolvidos = 3;
+    string id = 4;
+}
+message ListarRequest {
+    //vazio
+}
+
+message ListarReply {
+    repeated Tarefa tarefas = 1;
+}
+
+message AtualizarRequest {
+    string titulo = 1;
+    string descricao = 2;
+    string envolvidos = 3;
+    string id = 4;
+}
+
+message AtualizarReply {
+    string titulo = 1;
+    string descricao = 2;
+    string envolvidos = 3;
+    string id = 4;
+}
+
+message DeletarRequest {
+    string id = 1;
+}
+
+message DeletarReply {
+    string deletado = 1;
+}

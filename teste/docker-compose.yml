@@ -1,0 +1,18 @@
+services: 
+
+  server:
+    build: ./server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server:/app
+    restart: always
+
+  client: 
+    build: ./client
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./client:/app
+    depends_on:
+      - server
