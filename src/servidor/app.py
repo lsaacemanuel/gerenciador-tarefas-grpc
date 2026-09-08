@@ -1,11 +1,34 @@
 from concurrent import futures
 
 import grpc
+import os
+import uuid
 import tarefas_pb2
 import tarefas_pb2_grpc
 
 
 class gerenciadorDeTarefas(tarefas_pb2_grpc.gerenciadorDeTarefasServicer):
+
+    def CriarTarefa(self, request, context):
+        id_unico = str(uuid.uuid4())
+        diretorio_servidor = os.path.dirname(os.path.abspath(__file__))
+        db = os.path.join(diretorio_servidor, "database")
+        path_tarefa = os.path.join(db, f"{id_unico}.txt")
+
+        with open(path_tarefa, "w", encoding="utf-8") as nf:
+            nf.write("Titulo: " + request.titulo + "\n")
+            nf.write("Descricao: " + request.descricao + "\n")
+            nf.write("Envolvidos: " + request.envolvidos + "\n")
+            nf.write("ID da Tarefa: " + id_unico + "\n")
+
+        reply = tarefas_pb2.CriarReply()
+        reply.id = id_unico
+        reply.titulo = request.titulo
+        reply.descricao = request.descricao
+        reply.envolvidos = request.envolvidos
+
+        return reply
+
 
     def ListarTarefas(self, request, context):
         return tarefas_pb2.ListarReply(tarefas=[
