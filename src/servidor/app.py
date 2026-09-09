@@ -61,14 +61,30 @@ class gerenciadorDeTarefas(tarefas_pb2_grpc.gerenciadorDeTarefasServicer):
         return reply
             
     def ListarTarefas(self, request, context):
-        return tarefas_pb2.ListarReply(tarefas=[
-            tarefas_pb2.Tarefa(
-                id='1', 
-                titulo="CriarTeste", 
-                descricao="Testar o sistema", 
-                envolvidos="Eu")
-            ])
 
+        path_tarefa = os.path.join(os.path.dirname(__file__), "database")
+
+        reply = tarefas_pb2.ListarReply()
+
+        #pegando o caminho de cada arquivo do database
+        for f in os.listdir(path_tarefa):
+            #montando o caminho final de cada tarefa
+            caminho = os.path.join(path_tarefa, f)
+
+            try:
+                #abrindo para leitura a tarefa
+                with open(caminho, "r", encoding="utf-8") as f:
+                    #tirando a quebra de linha e organizando em uma array cada linha do arquivo
+                    conteudo = [linha.strip() for linha in f.readlines()]
+                #montando cada campo da tarefa na reply
+                dados = reply.tarefas.add()
+                dados.titulo = conteudo[0]
+                dados.descricao = conteudo[1]
+                dados.envolvidos = conteudo[2]
+                dados.id = conteudo[3]
+            except Exception as e:
+                print(f"Erro ao ler arquivo: {e}")
+        return reply
 
 def serve():
     port = "50051"
