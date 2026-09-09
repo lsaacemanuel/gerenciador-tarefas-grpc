@@ -10,16 +10,18 @@ import tarefas_pb2_grpc
 class gerenciadorDeTarefas(tarefas_pb2_grpc.gerenciadorDeTarefasServicer):
 
     def CriarTarefa(self, request, context):
+        #gerando um id aleatorio
         id_unico = str(uuid.uuid4())
-
+        #condensando o caminho do arquivo para ser aberto e modificado posteriormente
         path_tarefa = os.path.join(os.path.dirname(__file__), "database", f"{id_unico}.txt")
-
+        #criando, abrindo o arquivo e escrevendo dados
         with open(path_tarefa, "w", encoding="utf-8") as nf:
             nf.write("Titulo: " + request.titulo + "\n")
             nf.write("Descricao: " + request.descricao + "\n")
             nf.write("Envolvidos: " + request.envolvidos + "\n")
             nf.write("ID da Tarefa: " + id_unico + "\n")
 
+        #criando a reply de retorno
         reply = tarefas_pb2.CriarReply()
         reply.id = id_unico
         reply.titulo = request.titulo
@@ -30,15 +32,15 @@ class gerenciadorDeTarefas(tarefas_pb2_grpc.gerenciadorDeTarefasServicer):
 
     def AtualizarTarefa(self, request, context):
         id_tarefa = request.id
-
+        #condensando o caminho do arquivo para ser aberto e modificado posteriormente
         path_tarefa = os.path.join(os.path.dirname(__file__), "database", f"{id_tarefa}.txt")
-
+        #abrindo o arquivo para atualizar os dados
         with open(path_tarefa, "w+", encoding="utf-8") as nf:
             nf.write("Titulo: " + request.titulo + "\n")
             nf.write("Descricao: " + request.descricao + "\n")
             nf.write("Envolvidos: " + request.envolvidos + "\n")
             nf.write("ID da Tarefa: " + id_tarefa + "\n")
-
+        #montando a reply de retorno
         reply = tarefas_pb2.AtualizarReply()
         reply.titulo = request.titulo
         reply.descricao = request.descricao

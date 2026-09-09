@@ -45,7 +45,6 @@ message AtualizarRequest {
     string descricao = 2;
     string envolvidos = 3;
     string id = 4;
-    tipo = 5;
 }
 
 message AtualizarReply {

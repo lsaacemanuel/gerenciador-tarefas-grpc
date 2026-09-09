@@ -65,7 +65,6 @@ def run():
 
             case "3":
                 id = input("Digite o ID da tarefa que deseja atualizar: ")
-                loop = 1
 
                 titulo = input("\nDigite o novo titulo da tarefa que deseja atualizar: ")
                 descricao = input("Digite a nova descricao da tarefa que deseja atualizar: ")
