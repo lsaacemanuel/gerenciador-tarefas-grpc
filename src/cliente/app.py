@@ -54,13 +54,25 @@ def run():
                 request = tarefas_pb2.Tarefa(titulo=titulo, descricao=descricao, envolvidos=envolvidos)
 
                 try:
-                    stub.CriarTarefa(request)
-                    print("Tarefa adicionada com sucesso!")
+                    reply = stub.CriarTarefa(request)
+                    print(f"\nTarefa de ID: {reply.id} e Titulo: {reply.titulo} adicionada com sucesso!")
                 except grpc.RpcError as e:
                     print(f"Erro ao adicionar tarefa: {e}")
 
             case "2":
-                tarefas = stub.listarTarefas(tarefas_pb2.ListaTarefasRequest())
+                print("\nNas linhas a seguir, as tarefas que existem no sistema: \n")
+                request = tarefas_pb2.ListarRequest()
+                try:
+                    reply = stub.ListarTarefas(request)
+                    #percorrendo cada tarefa devolvida na lista do servidor
+                    for i in reply.tarefas:
+                        print(i.titulo)
+                        print(i.descricao)
+                        print(i.envolvidos)
+                        print(i.id + "\n")
+                    print("Parece que você chegou ao fim!")
+                except grpc.RpcError as e:
+                    print(f"Erro ao listar tarefas: {e}")
            
 
             case "3":
@@ -73,8 +85,8 @@ def run():
                 request = tarefas_pb2.Tarefa(titulo=titulo, descricao=descricao, envolvidos=envolvidos, id=id)
 
                 try:
-                    stub.AtualizarTarefa(request)
-                    print("Tarefa atualizada com sucesso!")
+                    reply = stub.AtualizarTarefa(request)
+                    print(f"\nA nova Tarefa de nome {reply.titulo} foi atualizada com sucesso!")
                 except grpc.RpcError as e:
                     print(f"Erro ao atualizar tarefa: {e}")
             
@@ -84,6 +96,7 @@ def run():
                 request = tarefas_pb2.DeletarRequest(id=id)
 
                 try:
+                    stub.DeletarTarefa(request)
                     print("Tarefa deletada com sucesso!")
                 except grpc.RpcError as e:
                     print(f"Erro ao deletar tarefa: {e}")
