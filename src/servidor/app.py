@@ -28,7 +28,25 @@ class gerenciadorDeTarefas(tarefas_pb2_grpc.gerenciadorDeTarefasServicer):
 
         return reply
 
+    def AtualizarTarefa(self, request, context):
+        id_tarefa = request.id
 
+        path_tarefa = os.path.join(os.path.dirname(__file__), "database", f"{id_tarefa}.txt")
+
+        with open(path_tarefa, "w+", encoding="utf-8") as nf:
+            nf.write("Titulo: " + request.titulo + "\n")
+            nf.write("Descricao: " + request.descricao + "\n")
+            nf.write("Envolvidos: " + request.envolvidos + "\n")
+            nf.write("ID da Tarefa: " + id_tarefa + "\n")
+
+        reply = tarefas_pb2.AtualizarReply()
+        reply.titulo = request.titulo
+        reply.descricao = request.descricao
+        reply.envolvidos = request.envolvidos
+                    
+        return reply
+            
+            
     def ListarTarefas(self, request, context):
         return tarefas_pb2.ListarReply(tarefas=[
             tarefas_pb2.Tarefa(

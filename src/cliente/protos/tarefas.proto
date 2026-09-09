@@ -51,7 +51,6 @@ message AtualizarReply {
     string titulo = 1;
     string descricao = 2;
     string envolvidos = 3;
-    string id = 4;
 }
 
 message DeletarRequest {
