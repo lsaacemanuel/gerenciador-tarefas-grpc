@@ -47,7 +47,18 @@ class gerenciadorDeTarefas(tarefas_pb2_grpc.gerenciadorDeTarefasServicer):
         reply.envolvidos = request.envolvidos
                     
         return reply
-            
+
+    def DeletarTarefa(self, request, context):
+        id_tarefa = request.id
+        
+        path_tarefa = os.path.join(os.path.dirname(__file__), "database", f"{id_tarefa}.txt")
+        #apagando o arquivo do sistema
+        os.remove(path_tarefa)
+
+        reply = tarefas_pb2.DeletarReply()
+        reply.deletado = "1"
+
+        return reply
             
     def ListarTarefas(self, request, context):
         return tarefas_pb2.ListarReply(tarefas=[

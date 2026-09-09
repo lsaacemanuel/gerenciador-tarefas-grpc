@@ -79,8 +79,14 @@ def run():
                     print(f"Erro ao atualizar tarefa: {e}")
             
             case "4":
-           
-                print("Tarefa deletada com sucesso!")
+                id = input("Digite o ID da tarefa que deseja apagar: ")
+
+                request = tarefas_pb2.DeletarRequest(id=id)
+
+                try:
+                    print("Tarefa deletada com sucesso!")
+                except grpc.RpcError as e:
+                    print(f"Erro ao deletar tarefa: {e}")
 
             case "5":
                 print("Saindo do programa...")
